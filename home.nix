@@ -5,10 +5,17 @@
   home.homeDirectory = "/home/meowster";
   programs.git.enable = true;
   home.stateVersion = "25.05";
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    NIXPKGS_ALLOW_UNFREE = 1;
+  };
+
+
   programs.bash = {
     enable = true;
     shellAliases = {
-      btw = "echo i use nixos, btw";
+      lg="lazygit";
     };
   };
 
