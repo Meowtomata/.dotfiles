@@ -57,6 +57,7 @@
     asusctl
     supergfxctl
     brightnessctl
+    lazygit
   ];
 
   services.asusd.enable = true;
