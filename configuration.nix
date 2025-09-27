@@ -12,27 +12,51 @@
   networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.wireless.iwd.enable = true;
+
+
+  ## https://wiki.nixos.org/wiki/PipeWire
+  services.pipewire = {
+    jack.enable = true;
+  };
+
 
   time.timeZone = "America/Chicago";
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  services.xserver.xkb.options = "caps:escape";
-
-  # let's install qtile and point our display manager to qtile
-  services.xserver = {
+  services.libinput = {
     enable = true;
-    autoRepeatDelay = 200;
-    autoRepeatInterval = 35;
-    windowManager.qtile.enable = true;
+    touchpad.disableWhileTyping = true;
+    touchpad.tapping = false;
+    
+  };
+
+  services.xserver = {
+  /*
+   enable = true;
+   xkbOptions = "caps:escape";
+   autoRepeatDelay = 200;
+   autoRepeatInterval = 35;
+   xkb.options = "caps:escape";
+   libinput.tapping = false;
+   windowManager.qtile.enable = true;
+   */
+  };
+
+  programs.hyprland = {
+    enable = true;
   };
 
   services.displayManager.ly.enable = true;
 
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+        ids = ["*"];
+        settings.main.capslock = "esc";
+    };
+  };
 
-  # Enable touchpad support
-  # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.meowster = {
@@ -50,7 +74,9 @@
     vim     
     wget
     neovim
-    alacritty
+    kitty
+    wofi
+    # alacritty
     qutebrowser
     bitwarden-cli
     git
@@ -67,7 +93,6 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "25.05";
-
 }
 
 # Help is available in the configuration.nix(5) man page, on
