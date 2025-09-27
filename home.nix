@@ -6,6 +6,10 @@
   programs.git.enable = true;
   home.stateVersion = "25.05";
 
+  imports = [
+    ./modules/hyprland/default.nix
+  ];
+
   home.sessionVariables = {
     EDITOR = "nvim";
     NIXPKGS_ALLOW_UNFREE = 1;
