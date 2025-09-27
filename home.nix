@@ -22,10 +22,17 @@
   programs.qutebrowser = {
     enable = true; 
 
+    searchEngines = {
+      DEFAULT = "https://startpage.com/sp/search?query={}";
+    };
+
+
     settings = {
       colors.webpage.darkmode.enabled = true;
-    };
-  };	
+      content.blocking.enabled = true;
+     };
+  };
+  	
 
   programs.git = {
     userName = "Meowtomata";
