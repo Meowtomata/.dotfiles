@@ -9,12 +9,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.hostName = "nixos"; 
   networking.wireless.iwd.enable = true;
-
 
   ## https://wiki.nixos.org/wiki/PipeWire
   services.pipewire = {
@@ -31,18 +27,6 @@
     
   };
 
-  services.xserver = {
-  /*
-   enable = true;
-   xkbOptions = "caps:escape";
-   autoRepeatDelay = 200;
-   autoRepeatInterval = 35;
-   xkb.options = "caps:escape";
-   libinput.tapping = false;
-   windowManager.qtile.enable = true;
-   */
-  };
-
   programs.hyprland = {
     enable = true;
   };
@@ -53,7 +37,7 @@
     enable = true;
     keyboards.default = {
         ids = ["*"];
-        settings.main.capslock = "esc";
+        settings.main.capslock = "overload(meta, esc)";
     };
   };
 
@@ -84,6 +68,14 @@
     supergfxctl
     brightnessctl
     lazygit
+    obsidian
+    pavucontrol
+    bitwig-studio
+    reaper
+    davinci-resolve
+    wl-clipboard
+    waybar
+    fzf
   ];
 
   services.asusd.enable = true;

@@ -10,10 +10,10 @@
 
     # https://wiki.hyprland.org/Configuring/Variables/#general
     general = {
-      gaps_in = 5;
-      gaps_out = 20;
+      gaps_in = 0;
+      gaps_out = 0;
 
-      border_size = 2;
+      border_size = 1;
 
       # https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
       "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";

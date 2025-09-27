@@ -1,4 +1,3 @@
-# modules/hyprland/variables.nix
 { ... }:
 
 {
