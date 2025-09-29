@@ -75,9 +75,8 @@
         {
           key = "<M-l>";
           mode = ["n"];
-          action = "<cmd>TmuxNavigateLeft<cr>";
+          action = "<cmd>TmuxNavigateRight<cr>";
           silent = true;
-          desc = "Tmux Navigate Left";
         }
         {
           key = "<M-k>";
@@ -94,22 +93,29 @@
         {
           key = "<M-h>";
           mode = ["n"];
-          action = "<cmd>TmuxNavigateRight<cr>";
+          action = "<cmd>TmuxNavigateLeft<cr>";
           silent = true;
         }
         {
-          key = "<leader>ff";
+          key = "<M-f>";
           mode = ["n"];
-          action = "<cmd>lua require('snacks.picker').files()<cr>";
+          action = "<cmd>lua require('snacks.picker').files({cwd = '/home/meowster', hidden = true})<cr>";
           silent = true;
           desc = "Find Files";
         }
         {
-          key = "<leader>fg";
+          key = "<M-g>";
           mode = ["n"];
           action = "<cmd>lua require('snacks.picker').grep()<cr>";
           silent = true;
           desc = "Live Grep";
+        }
+        {
+          key = "<M-s>";
+          mode = ["n"];
+          action = "<cmd>lua require('snacks.picker').smart({cwd = '/home/meowster', hidden = true})<cr>";
+          silent = true;
+          desc = "Smart Find";
         }
       ];
 
@@ -129,12 +135,51 @@
             picker = { enabled = true; };
           };
         };
+
+        images.image-nvim = { 
+          enable = true; 
+          setupOpts.backend = "kitty";
+        };
       };
 
       vim.extraPlugins = {
         # plugin found on nixpkgs
         vim-tmux-navigator = {
           package = pkgs.vimPlugins.vim-tmux-navigator;
+        };
+        leetcode-nvim = {
+          package = pkgs.vimPlugins.leetcode-nvim;
+          after = ["plenary-nvim" "nui-nvim"];
+          setup = ''
+            -- Proactively ensure the storage directories exist.
+            -- vim.fn.stdpath("data") usually resolves to ~/.local/share/nvim
+            -- vim.fn.stdpath("cache") usually resolves to ~/.cache/nvim
+            local data_dir = vim.fn.stdpath("data") .. "/leetcode"
+            local cache_dir = vim.fn.stdpath("cache") .. "/leetcode"
+
+            -- The "p" flag tells mkdir to create parent directories as needed (like mkdir -p).
+            vim.fn.mkdir(data_dir, "p")
+            vim.fn.mkdir(cache_dir, "p")
+
+            require('leetcode').setup({
+              lang = "python3",
+              image_support = true,
+
+              picker = {
+                provider = nil 
+              },
+
+              plugins = {
+                non_standalone = true
+              }
+            })
+          '';
+        };
+        nui-nvim = {
+          package = pkgs.vimPlugins.nui-nvim;
+        };
+        plenary-nvim = {
+          package = pkgs.vimPlugins.plenary-nvim;
         };
       };
     };
