@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 
+# https://nix-community.github.io/home-manager/options.xhtml
 {
   home.username = "meowster";
   home.homeDirectory = "/home/meowster";
@@ -30,6 +31,14 @@
       DEFAULT = "https://startpage.com/sp/search?query={}";
     };
 
+    keyBindings = {
+        normal = {
+          "<Alt+h>" = "tab-prev";
+          "<Alt+l>" = "tab-next";
+          "<Alt+K>" = "scroll-page 0 -0.5";
+          "<Alt+J>" = "scroll-page 0 0.5";
+        };
+    };
 
     settings = {
       colors.webpage.darkmode.enabled = true;
@@ -45,6 +54,7 @@
 
   programs.nvf = {
     enable = true;
+
 
     # https://notashelf.github.io/nvf/options.html
     settings = {
