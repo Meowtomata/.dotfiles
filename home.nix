@@ -53,6 +53,34 @@
         enable = true;
       };
 
+      vim.keymaps = [
+        {
+          key = "<M-l>";
+          mode = ["n"];
+          action = "<cmd>TmuxNavigateLeft<cr>";
+          silent = true;
+          desc = "Tmux Navigate Left";
+        }
+        {
+          key = "<M-k>";
+          mode = ["n"];
+          action = "<cmd>TmuxNavigateUp<cr>";
+          silent = true;
+        }
+        {
+          key = "<M-j>";
+          mode = ["n"];
+          action = "<cmd>TmuxNavigateDown<cr>";
+          silent = true;
+        }
+        {
+          key = "<M-h>";
+          mode = ["n"];
+          action = "<cmd>TmuxNavigateRight<cr>";
+          silent = true;
+        }
+      ];
+
       vim.utility = {
         oil-nvim = {
           enable = true;
@@ -64,6 +92,7 @@
       };
 
       vim.extraPlugins = {
+        # plugin found on nixpkgs
         vim-tmux-navigator = {
           package = pkgs.vimPlugins.vim-tmux-navigator;
         };
@@ -77,30 +106,28 @@
     prefix = "M-a";
 
     baseIndex = 1;
+
+    # Smart pane switching with awareness of Vim splits.
+    # See: https://github.com/christoomey/vim-tmux-navigator
     extraConfig = ''
         vim_pattern='(\S+/)?g?\.?(view|l?n?vim?x?|fzf)(diff)?(-wrapped)?'
         is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
             | grep -iqE '^[^TXZ ]+ +''${vim_pattern}$'"
-        bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
-        bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
-        bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
-        bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+        bind-key -n 'M-h' if-shell "$is_vim" 'send-keys M-h'  'select-pane -L'
+        bind-key -n 'M-j' if-shell "$is_vim" 'send-keys M-j'  'select-pane -D'
+        bind-key -n 'M-k' if-shell "$is_vim" 'send-keys M-k'  'select-pane -U'
+        bind-key -n 'M-l' if-shell "$is_vim" 'send-keys M-l'  'select-pane -R'
         tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
         if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
-            "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+            "bind-key -n 'M-\\' if-shell \"$is_vim\" 'send-keys M-\\'  'select-pane -l'"
         if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
-            "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+            "bind-key -n 'M-\\' if-shell \"$is_vim\" 'send-keys M-\\\\'  'select-pane -l'"
 
-      bind-key -T copy-mode-vi 'C-h' select-pane -L
-      bind-key -T copy-mode-vi 'C-j' select-pane -D
-      bind-key -T copy-mode-vi 'C-k' select-pane -U
-      bind-key -T copy-mode-vi 'C-l' select-pane -R
-      bind-key -T copy-mode-vi 'C-\' select-pane -l
-
-      bind h select-pane -L
-      bind j select-pane -D
-      bind k select-pane -U
-      bind l select-pane -R
+      bind-key -T copy-mode-vi 'M-h' select-pane -L
+      bind-key -T copy-mode-vi 'M-j' select-pane -D
+      bind-key -T copy-mode-vi 'M-k' select-pane -U
+      bind-key -T copy-mode-vi 'M-l' select-pane -R
+      bind-key -T copy-mode-vi 'M-\' select-pane -l
 
       bind -r H resize-pane -L 5
       bind -r J resize-pane -D 5
