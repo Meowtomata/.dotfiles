@@ -62,9 +62,14 @@
       vim.lsp = {
         enable = true;
       };
+
       vim.clipboard.enable = true;
       vim.clipboard.providers.wl-copy.enable = true;
       vim.clipboard.registers = "unnamedplus";
+
+      vim.globals.mapleader = " ";
+
+      vim.binds.whichKey.enable = true;
 
       vim.keymaps = [
         {
@@ -92,6 +97,20 @@
           action = "<cmd>TmuxNavigateRight<cr>";
           silent = true;
         }
+        {
+          key = "<leader>ff";
+          mode = ["n"];
+          action = "<cmd>lua require('snacks.picker').files()<cr>";
+          silent = true;
+          desc = "Find Files";
+        }
+        {
+          key = "<leader>fg";
+          mode = ["n"];
+          action = "<cmd>lua require('snacks.picker').grep()<cr>";
+          silent = true;
+          desc = "Live Grep";
+        }
       ];
 
       vim.utility = {
@@ -100,6 +119,14 @@
 
           setupOpts = {
             view_options.show_hidden = true;
+          };
+        };
+
+        snacks-nvim = {
+          enable = true;
+
+          setupOpts = {
+            picker = { enabled = true; };
           };
         };
       };

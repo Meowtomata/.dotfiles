@@ -76,6 +76,8 @@
     wl-clipboard
     waybar
     fzf
+    fd
+    ripgrep
     tmux
   ];
 
