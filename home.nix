@@ -52,6 +52,9 @@
       vim.lsp = {
         enable = true;
       };
+      vim.clipboard.enable = true;
+      vim.clipboard.providers.wl-copy.enable = true;
+      vim.clipboard.registers = "unnamedplus";
 
       vim.keymaps = [
         {
