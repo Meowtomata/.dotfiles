@@ -76,6 +76,7 @@
     wl-clipboard
     waybar
     fzf
+    tmux
   ];
 
   services.asusd.enable = true;
