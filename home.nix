@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, leetcode-tui, ... }:
 
 # https://nix-community.github.io/home-manager/options.xhtml
 {
@@ -11,16 +11,20 @@
     ./modules/hyprland/default.nix
   ];
 
+  home.packages = [
+    leetcode-tui.packages.${pkgs.system}.default
+  ];
+
   home.sessionVariables = {
     EDITOR = "nvim";
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
-
   programs.bash = {
     enable = true;
     shellAliases = {
       lg="lazygit";
+      le="nvim leetcode.nvim";
     };
   };
 
@@ -195,6 +199,8 @@
     # Smart pane switching with awareness of Vim splits.
     # See: https://github.com/christoomey/vim-tmux-navigator
     extraConfig = ''
+        set-option -g allow-passthrough on
+
         vim_pattern='(\S+/)?g?\.?(view|l?n?vim?x?|fzf)(diff)?(-wrapped)?'
         is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
             | grep -iqE '^[^TXZ ]+ +''${vim_pattern}$'"

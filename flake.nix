@@ -14,9 +14,14 @@
       url = "github:NotAShelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    leetcode-tui = {
+      url = "github:akarsh1995/leetcode-tui";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, nvf, ... }: {
+  outputs = { self, nixpkgs, home-manager, nixos-hardware, nvf, leetcode-tui, ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -26,6 +31,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
+            extraSpecialArgs = { inherit leetcode-tui; };
             users.meowster = {               
 	      imports = [
                 ./home.nix
