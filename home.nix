@@ -63,9 +63,24 @@
     # https://notashelf.github.io/nvf/options.html
     settings = {
       vim.viAlias = true;
+
       vim.lsp = {
         enable = true;
       };
+
+      vim.treesitter = {
+        enable = true;
+      };
+
+      vim.autocomplete.blink-cmp.enable = true;
+
+      vim.languages = {
+        python.enable = true;
+        markdown.enable = true;
+        nix.enable = true;
+      };
+
+ 
 
       vim.clipboard.enable = true;
       vim.clipboard.providers.wl-copy.enable = true;
