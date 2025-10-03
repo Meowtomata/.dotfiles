@@ -1,4 +1,4 @@
-{ config, pkgs, leetcode-tui, ... }:
+{ config, pkgs, lib, leetcode-tui, ... }:
 
 # https://nix-community.github.io/home-manager/options.xhtml
 {
@@ -80,17 +80,82 @@
         nix.enable = true;
       };
 
- 
+      vim.notes.obsidian = {
+        enable = true;
+
+        setupOpts = {
+          workspaces = [
+              {
+                name = "main"; 
+                path = "${config.home.homeDirectory}/Obsidian/";
+              }
+              {
+                name = "test"; 
+                path = "${config.home.homeDirectory}/test/";
+              }
+            ];
+          follow_url_func = lib.generators.mkLuaInline ''
+            function(url)
+              if string.match(url, "^file:///") then
+                local path = string.gsub(url, "^file://", "")
+                vim.cmd("edit " .. vim.fn.fnameescape(path))
+                return
+              end
+
+              local fallback_command = { "qutebrowser", url }
+
+              local ok, workspace_id = pcall(function()
+                local json_output = vim.fn.system("hyprctl activeworkspace -j")
+                if vim.v.shell_error ~= 0 then return nil end
+                return vim.fn.json_decode(json_output).id
+              end)
+
+              if not (ok and workspace_id) then
+                vim.fn.jobstart(fallback_command)
+                vim.notify("Opening " .. url .. " in qutebrowser (fallback)", "info")
+                return
+              end
+
+              local rule = "workspace " .. workspace_id .. " silent, class:(?i)qutebrowser, once"
+              local rule_command = { "hyprctl", "keyword", "windowrulev2", rule }
+
+              local launch_command = { "qutebrowser", "--target", "window", url }
+
+              vim.fn.jobstart(rule_command, {
+                on_exit = function()
+                  vim.fn.jobstart(launch_command)
+                  vim.notify("Opening " .. url .. " in qutebrowser on workspace " .. workspace_id, "info")
+                end,
+              })
+            end
+          '';
+        };
+
+      };
 
       vim.clipboard.enable = true;
       vim.clipboard.providers.wl-copy.enable = true;
       vim.clipboard.registers = "unnamedplus";
+
 
       vim.globals.mapleader = " ";
 
       vim.binds.whichKey.enable = true;
 
       vim.keymaps = [
+        {
+          key = "<Tab>";
+          mode = ["n"];
+          action = "<cmd>bn<cr>";
+          silent = true;
+        }
+        {
+          key = "<S-Tab>";
+          mode = ["n"];
+          action = "<cmd>bp<cr>";
+          silent = true;
+        }
+        # tmux navigator
         {
           key = "<M-l>";
           mode = ["n"];
@@ -115,13 +180,7 @@
           action = "<cmd>TmuxNavigateLeft<cr>";
           silent = true;
         }
-        {
-          key = "<M-f>";
-          mode = ["n"];
-          action = "<cmd>lua require('snacks.picker').files({cwd = '/home/meowster', hidden = true})<cr>";
-          silent = true;
-          desc = "Find Files";
-        }
+        # snacks.nvim picker
         {
           key = "<M-g>";
           mode = ["n"];
@@ -130,12 +189,71 @@
           desc = "Live Grep";
         }
         {
-          key = "<M-s>";
+          key = "<M-f>";
           mode = ["n"];
           action = "<cmd>lua require('snacks.picker').smart({cwd = '/home/meowster', hidden = true})<cr>";
           silent = true;
           desc = "Smart Find";
         }
+        {
+          key = "<M-b>";
+          mode = ["n"];
+          action = "<cmd>lua require('snacks.picker').buffers()<cr>";
+          silent = true;
+          desc = "Smart Find";
+        }
+        # Obsidian Links
+        #
+        # Search links & files
+        #
+        {
+          key = "<M-s>";
+          mode = ["n"];
+          action = "<cmd>ObsidianBacklinks<cr>";
+          silent = true;
+          desc = "Obsidian Backlinks";
+        }
+        {
+          key = "<M-d>";
+          mode = ["n"];
+          action = "<cmd>ObsidianLinks<cr>";
+          silent = true;
+          desc = "Obsidian Links";
+        }
+        {
+          key = "<M-w>";
+          mode = ["o"];
+          action = "<cmd>ObsidianSearch<cr>";
+          silent = true;
+          desc = "Obsidian Links";
+        }
+        # Create files/links
+        {
+          key = "<C-n>";
+          mode = ["n"];
+          action = "<cmd>ObsidianNew<cr>";
+          silent = true;
+          desc = "Create new obsidian note";
+        }
+      ];
+
+      vim.options = {
+        foldlevelstart = 99;
+      };
+
+      vim.autocmds = [
+      {
+        # Event: Trigger when Neovim detects a file's type
+        event = [ "FileType" ];
+        
+        # Pattern: Only run for these specific filetypes
+        pattern = [ "markdown" ];
+        
+        # Command: The command to execute.
+        # Use `setlocal` to apply the setting ONLY to the current buffer.
+        command = "setlocal conceallevel=2";
+      }
+      # You can add other autocmds here
       ];
 
       vim.utility = {
@@ -152,9 +270,11 @@
 
           setupOpts = {
             picker = { enabled = true; };
+            # image = { enabled = true; };
           };
         };
 
+        # used by leetcode-nvim
         images.image-nvim = { 
           enable = true; 
           setupOpts.backend = "kitty";
