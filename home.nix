@@ -9,10 +9,15 @@
 
   imports = [
     ./modules/hyprland/default.nix
+  # ./modules/test-logger.nix
+    ./modules/hyprland-logger.nix
   ];
 
-  home.packages = [
+  home.packages = with pkgs; [
     leetcode-tui.packages.${pkgs.system}.default
+    jq
+    gcalcli
+    bash
   ];
 
   home.sessionVariables = {
@@ -25,6 +30,7 @@
     shellAliases = {
       lg="lazygit";
       le="nvim leetcode.nvim";
+      bat="cat /sys/class/power_supply/BAT0/capacity";
     };
   };
 
@@ -335,6 +341,7 @@
     # See: https://github.com/christoomey/vim-tmux-navigator
     extraConfig = ''
         set-option -g allow-passthrough on
+        set-option -g set-clipboard on
 
         vim_pattern='(\S+/)?g?\.?(view|l?n?vim?x?|fzf)(diff)?(-wrapped)?'
         is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
