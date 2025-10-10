@@ -1,4 +1,10 @@
-{ config, pkgs, lib, leetcode-tui, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  leetcode-tui,
+  ...
+}:
 
 # https://nix-community.github.io/home-manager/options.xhtml
 {
@@ -9,8 +15,9 @@
 
   imports = [
     ./modules/hyprland/default.nix
-  # ./modules/test-logger.nix
-    ./modules/hyprland-logger.nix
+    ./modules/nvim/default.nix
+    # ./modules/test-logger.nix
+    # ./modules/hyprland-logger.nix
   ];
 
   home.packages = with pkgs; [
@@ -18,6 +25,8 @@
     jq
     gcalcli
     bash
+    prettierd
+    nixfmt-rfc-style
   ];
 
   home.sessionVariables = {
@@ -28,34 +37,51 @@
   programs.bash = {
     enable = true;
     shellAliases = {
-      lg="lazygit";
-      le="nvim leetcode.nvim";
-      bat="cat /sys/class/power_supply/BAT0/capacity";
+      lg = "lazygit";
+      le = "nvim leetcode.nvim";
+      bat = "cat /sys/class/power_supply/BAT0/capacity";
+    };
+
+    initExtra = ''
+      nvim-smart-picker() {
+        nvim -c 'lua require("snacks.picker").smart({cwd="/home/meowster", hidden=true})'
+      }
+
+      bind -x '"\ef": nvim-smart-picker'
+      bind -x '"\eo": nvim -c ObsidianSearch'
+      bind -x '"\en": nvim -c ObsidianNew'
+    '';
+  };
+
+  programs.kitty = {
+    enable = true;
+
+    keybindings = {
+      "alt+shift+o" = ''launch tmux split-window "nvim -c 'ObsidianSearch'"'';
     };
   };
 
   programs.qutebrowser = {
-    enable = true; 
+    enable = true;
 
     searchEngines = {
       DEFAULT = "https://startpage.com/sp/search?query={}";
     };
 
     keyBindings = {
-        normal = {
-          "<Alt+h>" = "tab-prev";
-          "<Alt+l>" = "tab-next";
-          "<Alt+K>" = "scroll-page 0 -0.5";
-          "<Alt+J>" = "scroll-page 0 0.5";
-        };
+      normal = {
+        "<Alt+h>" = "tab-prev";
+        "<Alt+l>" = "tab-next";
+        "<Alt+K>" = "scroll-page 0 -0.5";
+        "<Alt+J>" = "scroll-page 0 0.5";
+      };
     };
 
     settings = {
       colors.webpage.darkmode.enabled = true;
       content.blocking.enabled = true;
-     };
+    };
   };
-  	
 
   programs.git = {
     userName = "Meowtomata";
@@ -65,13 +91,14 @@
   programs.nvf = {
     enable = true;
 
-
     # https://notashelf.github.io/nvf/options.html
     settings = {
       vim.viAlias = true;
+      vim.undoFile.enable = true;
 
       vim.lsp = {
         enable = true;
+        formatOnSave = true;
       };
 
       vim.treesitter = {
@@ -79,70 +106,22 @@
       };
 
       vim.autocomplete.blink-cmp.enable = true;
+      vim.formatter.conform-nvim = {
+        enable = true;
+        setupOpts.formatters_by_ft = {
+          markdown = [ "prettierd" ];
+          nix = [ "nixfmt" ];
+        };
+      };
 
       vim.languages = {
         python.enable = true;
-        markdown.enable = true;
         nix.enable = true;
-      };
-
-      vim.notes.obsidian = {
-        enable = true;
-
-        setupOpts = {
-          workspaces = [
-              {
-                name = "main"; 
-                path = "${config.home.homeDirectory}/Obsidian/";
-              }
-              {
-                name = "test"; 
-                path = "${config.home.homeDirectory}/test/";
-              }
-            ];
-          follow_url_func = lib.generators.mkLuaInline ''
-            function(url)
-              if string.match(url, "^file:///") then
-                local path = string.gsub(url, "^file://", "")
-                vim.cmd("edit " .. vim.fn.fnameescape(path))
-                return
-              end
-
-              local fallback_command = { "qutebrowser", url }
-
-              local ok, workspace_id = pcall(function()
-                local json_output = vim.fn.system("hyprctl activeworkspace -j")
-                if vim.v.shell_error ~= 0 then return nil end
-                return vim.fn.json_decode(json_output).id
-              end)
-
-              if not (ok and workspace_id) then
-                vim.fn.jobstart(fallback_command)
-                vim.notify("Opening " .. url .. " in qutebrowser (fallback)", "info")
-                return
-              end
-
-              local rule = "workspace " .. workspace_id .. " silent, class:(?i)qutebrowser, once"
-              local rule_command = { "hyprctl", "keyword", "windowrulev2", rule }
-
-              local launch_command = { "qutebrowser", "--target", "window", url }
-
-              vim.fn.jobstart(rule_command, {
-                on_exit = function()
-                  vim.fn.jobstart(launch_command)
-                  vim.notify("Opening " .. url .. " in qutebrowser on workspace " .. workspace_id, "info")
-                end,
-              })
-            end
-          '';
-        };
-
       };
 
       vim.clipboard.enable = true;
       vim.clipboard.providers.wl-copy.enable = true;
       vim.clipboard.registers = "unnamedplus";
-
 
       vim.globals.mapleader = " ";
 
@@ -151,115 +130,63 @@
       vim.keymaps = [
         {
           key = "<Tab>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>bn<cr>";
           silent = true;
         }
         {
           key = "<S-Tab>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>bp<cr>";
           silent = true;
         }
         # tmux navigator
         {
           key = "<M-l>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>TmuxNavigateRight<cr>";
           silent = true;
         }
         {
           key = "<M-k>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>TmuxNavigateUp<cr>";
           silent = true;
         }
         {
           key = "<M-j>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>TmuxNavigateDown<cr>";
           silent = true;
         }
         {
           key = "<M-h>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>TmuxNavigateLeft<cr>";
           silent = true;
         }
         # snacks.nvim picker
         {
           key = "<M-g>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>lua require('snacks.picker').grep()<cr>";
           silent = true;
           desc = "Live Grep";
         }
         {
           key = "<M-f>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>lua require('snacks.picker').smart({cwd = '/home/meowster', hidden = true})<cr>";
           silent = true;
           desc = "Smart Find";
         }
         {
           key = "<M-b>";
-          mode = ["n"];
+          mode = [ "n" ];
           action = "<cmd>lua require('snacks.picker').buffers()<cr>";
           silent = true;
           desc = "Smart Find";
         }
-        # Obsidian Links
-        #
-        # Search links & files
-        #
-        {
-          key = "<M-s>";
-          mode = ["n"];
-          action = "<cmd>ObsidianBacklinks<cr>";
-          silent = true;
-          desc = "Obsidian Backlinks";
-        }
-        {
-          key = "<M-d>";
-          mode = ["n"];
-          action = "<cmd>ObsidianLinks<cr>";
-          silent = true;
-          desc = "Obsidian Links";
-        }
-        {
-          key = "<M-w>";
-          mode = ["o"];
-          action = "<cmd>ObsidianSearch<cr>";
-          silent = true;
-          desc = "Obsidian Links";
-        }
-        # Create files/links
-        {
-          key = "<C-n>";
-          mode = ["n"];
-          action = "<cmd>ObsidianNew<cr>";
-          silent = true;
-          desc = "Create new obsidian note";
-        }
-      ];
-
-      vim.options = {
-        foldlevelstart = 99;
-      };
-
-      vim.autocmds = [
-      {
-        # Event: Trigger when Neovim detects a file's type
-        event = [ "FileType" ];
-        
-        # Pattern: Only run for these specific filetypes
-        pattern = [ "markdown" ];
-        
-        # Command: The command to execute.
-        # Use `setlocal` to apply the setting ONLY to the current buffer.
-        command = "setlocal conceallevel=2";
-      }
-      # You can add other autocmds here
       ];
 
       vim.utility = {
@@ -275,14 +202,16 @@
           enable = true;
 
           setupOpts = {
-            picker = { enabled = true; };
+            picker = {
+              enabled = true;
+            };
             # image = { enabled = true; };
           };
         };
 
         # used by leetcode-nvim
-        images.image-nvim = { 
-          enable = true; 
+        images.image-nvim = {
+          enable = true;
           setupOpts.backend = "kitty";
         };
       };
@@ -294,7 +223,10 @@
         };
         leetcode-nvim = {
           package = pkgs.vimPlugins.leetcode-nvim;
-          after = ["plenary-nvim" "nui-nvim"];
+          after = [
+            "plenary-nvim"
+            "nui-nvim"
+          ];
           setup = ''
             -- Proactively ensure the storage directories exist.
             -- vim.fn.stdpath("data") usually resolves to ~/.local/share/nvim
@@ -371,10 +303,10 @@
       bind - split-window -v
       unbind '"'
       unbind %
-      
+
       set -s escape-time 0 
       set-option -g repeat-time 1000
-   '';
+    '';
   };
 
   programs.ssh = {
