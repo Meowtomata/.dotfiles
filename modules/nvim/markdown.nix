@@ -4,13 +4,6 @@
   programs.nvf = {
     settings = {
 
-      vim.options = {
-        foldlevelstart = 99;
-        shiftwidth = 4;
-        tabstop = 4;
-        linebreak = true;
-      };
-
       vim.languages = {
         markdown.enable = true;
         markdown.extensions.markview-nvim.enable = true;

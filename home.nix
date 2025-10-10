@@ -93,9 +93,6 @@
 
     # https://notashelf.github.io/nvf/options.html
     settings = {
-      vim.viAlias = true;
-      vim.undoFile.enable = true;
-
       vim.lsp = {
         enable = true;
         formatOnSave = true;
@@ -118,12 +115,6 @@
         python.enable = true;
         nix.enable = true;
       };
-
-      vim.clipboard.enable = true;
-      vim.clipboard.providers.wl-copy.enable = true;
-      vim.clipboard.registers = "unnamedplus";
-
-      vim.globals.mapleader = " ";
 
       vim.binds.whichKey.enable = true;
 
