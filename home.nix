@@ -14,8 +14,9 @@
   home.stateVersion = "25.05";
 
   imports = [
-    ./modules/hyprland/default.nix
+    # ./modules/hyprland/default.nix
     ./modules/nvim/default.nix
+    ./modules/niri/niri.nix
     # ./modules/test-logger.nix
     # ./modules/hyprland-logger.nix
   ];
