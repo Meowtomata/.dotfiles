@@ -6,7 +6,6 @@
 
       vim.languages = {
         markdown.enable = true;
-        markdown.extensions.markview-nvim.enable = true;
       };
 
       vim.keymaps = [
@@ -42,6 +41,19 @@
           action = "<cmd>ObsidianNew<cr>";
           silent = true;
           desc = "Create new obsidian note";
+        }
+        # Better Markdown Navigation
+        {
+          key = "j";
+          mode = [ "n" ];
+          action = "gj";
+          silent = true;
+        }
+        {
+          key = "k";
+          mode = [ "n" ];
+          action = "gk";
+          silent = true;
         }
       ];
 

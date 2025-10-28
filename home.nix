@@ -41,14 +41,22 @@
       lg = "lazygit";
       le = "nvim leetcode.nvim";
       bat = "cat /sys/class/power_supply/BAT0/capacity";
+      icat = "kitten icat";
     };
 
     initExtra = ''
       nvim-smart-picker() {
         nvim -c 'lua require("snacks.picker").smart({cwd="/home/meowster", hidden=true})'
       }
+      nvim-grep-picker() {
+        nvim -c 'lua require("snacks.picker").grep({cwd="/home/meowster", hidden=true})'
+      }
 
       bind -x '"\ef": nvim-smart-picker'
+      bind -r "\eg"
+      bind -x '"\eg": nvim-grep-picker'
+      bind -r "\ed"
+      bind -x '"\ed": nvim -c ObsidianDailies'
       bind -x '"\eo": nvim -c ObsidianSearch'
       bind -x '"\en": nvim -c ObsidianNew'
     '';
@@ -103,7 +111,13 @@
         enable = true;
       };
 
-      vim.autocomplete.blink-cmp.enable = true;
+      vim.autocomplete.blink-cmp = {
+        enable = true;
+        setupOpts.sources.per_filetype.markdown = [
+          "path"
+        ];
+      };
+
       vim.formatter.conform-nvim = {
         enable = true;
         setupOpts.formatters_by_ft = {
@@ -115,6 +129,7 @@
       vim.languages = {
         python.enable = true;
         nix.enable = true;
+        clang.enable = true;
       };
 
       vim.binds.whichKey.enable = true;
@@ -130,6 +145,13 @@
           key = "<S-Tab>";
           mode = [ "n" ];
           action = "<cmd>bp<cr>";
+          silent = true;
+        }
+        # Oil
+        {
+          key = "-";
+          mode = [ "n" ];
+          action = "<cmd>Oil<cr>";
           silent = true;
         }
         # tmux navigator
@@ -161,14 +183,14 @@
         {
           key = "<M-g>";
           mode = [ "n" ];
-          action = "<cmd>lua require('snacks.picker').grep()<cr>";
+          action = "<cmd>lua require('snacks.picker').grep({cwd = '/home/meowster', hidden = true, exclude= { '.bash_history' }})<cr>";
           silent = true;
           desc = "Live Grep";
         }
         {
           key = "<M-f>";
           mode = [ "n" ];
-          action = "<cmd>lua require('snacks.picker').smart({cwd = '/home/meowster', hidden = true})<cr>";
+          action = "<cmd>lua require('snacks.picker').smart({cwd = '/home/meowster', hidden = true, exclude= { '.bash_history' } })<cr>";
           silent = true;
           desc = "Smart Find";
         }
@@ -197,15 +219,18 @@
             picker = {
               enabled = true;
             };
-            # image = { enabled = true; };
+            image = {
+              enabled = true;
+            };
           };
         };
 
         # used by leetcode-nvim
         images.image-nvim = {
-          enable = true;
+          enable = false;
           setupOpts.backend = "kitty";
         };
+        images.img-clip.enable = false;
       };
 
       vim.extraPlugins = {
