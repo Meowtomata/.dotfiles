@@ -8,7 +8,7 @@
 {
 
   imports = [
-    ./niri-workspace-tracker.nix
+    # ./niri-workspace-tracker.nix
   ];
 
   programs.niri = {
@@ -21,8 +21,8 @@
       };
 
       binds = with config.lib.niri.actions; {
-        # --- Your existing keybindings ---
-        "Mod+t" = {
+
+        "Mod+T" = {
           action = spawn "kitty";
         };
         "Mod+R" = {
@@ -172,6 +172,9 @@
       };
       workspaces."8-Config" = {
         name = "Configuration";
+      };
+      workspaces."9-Journal" = {
+        name = "Journal";
       };
     };
   };

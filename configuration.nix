@@ -7,7 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/niri/niri-logger-resume.nix
+    # ./modules/niri/niri-logger-resume.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -75,7 +75,10 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.meowster = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "libvirtd"
+    ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       tree
     ];
@@ -114,7 +117,6 @@
     pavucontrol
     bitwig-studio
     reaper
-    davinci-resolve
     wl-clipboard
     waybar
     fzf
@@ -128,6 +130,13 @@
     calcure
     browsh
     zathura
+    libvirt
+    dnsmasq
+    sweethome3d.application
+    xwayland-satellite
+    android-tools
+    jmtpfs
+    gcc
   ];
 
   services.asusd.enable = true;
@@ -135,6 +144,7 @@
 
   hardware.graphics.enable = true;
 
+  virtualisation.libvirtd.enable = true;
   hardware.nvidia.powerManagement.enable = true;
   nixpkgs.config.allowUnfree = true;
 
