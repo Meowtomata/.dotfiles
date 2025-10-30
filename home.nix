@@ -1,8 +1,9 @@
 {
   config,
   pkgs,
+  inputs,
   lib,
-  leetcode-tui,
+  # leetcode-tui,
   ...
 }:
 
@@ -14,20 +15,21 @@
   home.stateVersion = "25.05";
 
   imports = [
-    # ./modules/hyprland/default.nix
-    ./modules/nvim/default.nix
+    ./modules/nvim
     ./modules/niri/niri.nix
+    ./applications.nix
     # ./modules/test-logger.nix
     # ./modules/hyprland-logger.nix
   ];
 
   home.packages = with pkgs; [
-    leetcode-tui.packages.${pkgs.system}.default
+    #   leetcode-tui.packages.${pkgs.system}.default
     jq
     gcalcli
     bash
     prettierd
     nixfmt-rfc-style
+
   ];
 
   home.sessionVariables = {

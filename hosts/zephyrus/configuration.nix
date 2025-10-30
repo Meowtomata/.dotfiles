@@ -1,14 +1,30 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   ...
 }:
 {
   imports = [
     ./hardware-configuration.nix
-    # ./modules/niri/niri-logger-resume.nix
+    inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
   ];
+
+  # I configured home-manager here I think
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs; };
+    users.meowster = {
+      imports = [
+        ../../home.nix
+        inputs.nvf.homeManagerModules.default
+        inputs.niri.homeModules.niri
+      ];
+    };
+    backupFileExtension = "backup";
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -26,34 +42,12 @@
 
   time.timeZone = "America/Chicago";
 
-  services.libinput = {
-    enable = true;
-    touchpad.disableWhileTyping = true;
-    touchpad.tapping = false;
-
-  };
-
-  # services.logind.lidSwitch = "ignore";
-  # services.logind.lidSwitchDocked = "ignore";
-  # services.logind.lidSwitch = "hibernate";
-
-  programs.hyprland = {
-    enable = false;
-  };
-
-  programs.niri = {
-    enable = true;
-    package = pkgs.niri-stable;
-  };
-
+  # fonts or something
   fonts = {
     packages = with pkgs; [
-      # A good default set of fonts
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
-
-      # Another popular fallback font
       dejavu_fonts
     ];
 
@@ -64,6 +58,7 @@
 
   services.displayManager.ly.enable = true;
 
+  # Change keymappings
   services.keyd = {
     enable = true;
     keyboards.default = {
@@ -72,80 +67,39 @@
     };
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Change touchpad behavior
+  services.libinput = {
+    enable = true;
+    touchpad.disableWhileTyping = true;
+    touchpad.tapping = false;
+  };
+
+  # Define a user account
   users.users.meowster = {
     isNormalUser = true;
     extraGroups = [
-      "wheel"
-      "libvirtd"
-    ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      tree
+      "wheel" # Enable ‘sudo’ for the user.
     ];
   };
-
-  security.polkit.enable = true;
-
-  # Add a rule to allow users in the "wheel" group to suspend the system.
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (action.id == "org.freedesktop.login1.suspend" &&
-          subject.isInGroup("wheel")) {
-        return polkit.Result.YES;
-      }
-    });
-  '';
-
-  programs.firefox.enable = true;
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
     vim
     wget
-    neovim
-    kitty
-    fuzzel
-    # alacritty
-    qutebrowser
-    bitwarden-cli
     git
+
+    # probably needed for zephyrus
     asusctl
     supergfxctl
     brightnessctl
-    lazygit
-    obsidian
-    pavucontrol
-    bitwig-studio
-    reaper
-    wl-clipboard
-    waybar
-    fzf
-    fd
-    ripgrep
-    jq
-    socat
-    tmux
-    gcalcli
-    calcurse
-    calcure
-    browsh
-    zathura
-    libvirt
-    dnsmasq
-    sweethome3d.application
-    xwayland-satellite
-    android-tools
-    jmtpfs
-    gcc
   ];
 
+  # probably useful to enable
   services.asusd.enable = true;
   services.supergfxd.enable = true;
-
   hardware.graphics.enable = true;
-
-  virtualisation.libvirtd.enable = true;
   hardware.nvidia.powerManagement.enable = true;
+
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [

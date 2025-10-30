@@ -8,7 +8,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+    };
 
     niri = {
       url = "github:sodiboo/niri-flake";
@@ -30,36 +32,18 @@
     {
       self,
       nixpkgs,
-      home-manager,
       nixos-hardware,
       nvf,
       leetcode-tui,
-      niri,
       ...
-    }:
+    }@inputs:
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
-          ./configuration.nix
-          niri.nixosModules.niri
-          { nixpkgs.overlays = [ niri.overlays.niri ]; }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit leetcode-tui; };
-              users.meowster = {
-                imports = [
-                  ./home.nix
-                  nvf.homeManagerModules.default
-                ];
-              };
-              backupFileExtension = "backup";
-            };
-          }
-          nixos-hardware.nixosModules.asus-zephyrus-gu603h
+          ./hosts/zephyrus/configuration.nix
+          inputs.home-manager.nixosModules.default
         ];
       };
     };
