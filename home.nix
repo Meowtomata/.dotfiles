@@ -16,7 +16,8 @@
 
   imports = [
     ./applications.nix
-    ./modules/nvim
+    #   ./modules/nvim
+    ./modules/nixCats
     ./modules/niri
     ./modules/qutebrowser
     ./modules/bash

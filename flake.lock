@@ -171,6 +171,21 @@
         "type": "github"
       }
     },
+    "nixCats": {
+      "locked": {
+        "lastModified": 1761732732,
+        "narHash": "sha256-AP3KzTaFXFLjWWXysSnVTXUaGuC3hkUQZSlxUdGsLSs=",
+        "owner": "BirdeeHub",
+        "repo": "nixCats-nvim",
+        "rev": "6307455a6ccceadb9f873fc51d4cf7cd39bdace5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "nixCats-nvim",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1758663926,
@@ -247,6 +262,7 @@
         "home-manager": "home-manager",
         "leetcode-tui": "leetcode-tui",
         "niri": "niri",
+        "nixCats": "nixCats",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nvf": "nvf"

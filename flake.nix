@@ -17,6 +17,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixCats = {
+      url = "github:BirdeeHub/nixCats-nvim";
+    };
+
     nvf = {
       url = "github:NotAShelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
