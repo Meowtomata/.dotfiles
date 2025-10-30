@@ -2,8 +2,6 @@
 
 {
   imports = [
-    ./markdown.nix
     ./options.nix
-    ./additional.nix
   ];
 }

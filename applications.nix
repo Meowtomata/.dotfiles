@@ -28,6 +28,9 @@
     fd # probably used for something in neovim idk
     jq # json tool
     gcalcli # for google calendar sync
+    bash
+    prettierd
+    nixfmt-rfc-style
 
     # android utilities
     android-tools
