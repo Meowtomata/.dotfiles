@@ -172,6 +172,23 @@
       }
     },
     "nixCats": {
+      "inputs": {
+        "nixCats": "nixCats_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/nixCats",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/nixCats",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "nixCats_2": {
       "locked": {
         "lastModified": 1761732732,
         "narHash": "sha256-AP3KzTaFXFLjWWXysSnVTXUaGuC3hkUQZSlxUdGsLSs=",

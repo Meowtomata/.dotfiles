@@ -18,7 +18,9 @@
     };
 
     nixCats = {
-      url = "github:BirdeeHub/nixCats-nvim";
+    # url = "github:BirdeeHub/nixCats-nvim";
+      url = "path:./modules/nixCats";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nvf = {
@@ -36,9 +38,6 @@
     {
       self,
       nixpkgs,
-      nixos-hardware,
-      nvf,
-      leetcode-tui,
       ...
     }@inputs:
     {

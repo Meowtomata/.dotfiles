@@ -17,7 +17,7 @@
   imports = [
     ./applications.nix
     #   ./modules/nvim
-    ./modules/nixCats
+    inputs.nixCats.homeModules.default
     ./modules/niri
     ./modules/qutebrowser
     ./modules/bash
@@ -30,6 +30,12 @@
     EDITOR = "nvim";
     NIXPKGS_ALLOW_UNFREE = 1;
   };
+
+  nixCats = {
+    enable = true;
+    packageNames = [ "nixCats" "regularCats" ];
+  };
+
 
   programs.kitty = {
     enable = true;
