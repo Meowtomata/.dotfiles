@@ -20,7 +20,6 @@
     # Terminal Apps
     bitwarden-cli
     lazygit
-    tmux
 
     # utilities
     xwayland-satellite # needed for apps like sweethome3d

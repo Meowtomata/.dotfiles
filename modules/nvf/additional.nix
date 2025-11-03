@@ -28,32 +28,6 @@
           action = "<cmd>Oil<cr>";
           silent = true;
         }
-        # tmux navigator
-        {
-          key = "<M-l>";
-          mode = [ "n" ];
-          action = "<cmd>TmuxNavigateRight<cr>";
-          silent = true;
-        }
-        {
-          key = "<M-k>";
-          mode = [ "n" ];
-          action = "<cmd>TmuxNavigateUp<cr>";
-          silent = true;
-        }
-        {
-          key = "<M-j>";
-          mode = [ "n" ];
-          action = "<cmd>TmuxNavigateDown<cr>";
-          silent = true;
-        }
-        {
-          key = "<M-h>";
-          mode = [ "n" ];
-          action = "<cmd>TmuxNavigateLeft<cr>";
-          silent = true;
-        }
-
       ];
 
       vim.utility = {
@@ -74,10 +48,6 @@
       };
 
       vim.extraPlugins = {
-        # plugin found on nixpkgs
-        vim-tmux-navigator = {
-          package = pkgs.vimPlugins.vim-tmux-navigator;
-        };
         leetcode-nvim = {
           package = pkgs.vimPlugins.leetcode-nvim;
           after = [
