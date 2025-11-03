@@ -20,6 +20,7 @@
     ./modules/niri
     ./modules/qutebrowser
     ./modules/bash
+    ./modules/zellij
     # ./modules/test-logger.nix
     # ./modules/hyprland-logger.nix
   ];
