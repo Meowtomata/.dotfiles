@@ -16,8 +16,7 @@
 
   imports = [
     ./applications.nix
-    #   ./modules/nvim
-    inputs.nixCats.homeModules.default
+    ./modules/nvf
     ./modules/niri
     ./modules/qutebrowser
     ./modules/bash
@@ -31,11 +30,18 @@
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
-  nixCats = {
-    enable = true;
-    packageNames = [ "nixCats" "regularCats" ];
+  home.file.".ignore" = {
+    text = ''
+      .BitwigStudio
+      .cache
+      .local
+    '';
   };
 
+  # nixCats = {
+  #   enable = true;
+  #   packageNames = [ "nixCats" "regularCats" ];
+  # };
 
   programs.kitty = {
     enable = true;

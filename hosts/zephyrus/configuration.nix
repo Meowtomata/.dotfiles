@@ -54,6 +54,8 @@
     fontconfig.enable = true;
   };
 
+  programs.niri.enable = true;
+
   environment.variables.NIXOS_OZONE_WL = "1";
 
   services.displayManager.ly.enable = true;

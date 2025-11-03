@@ -5,35 +5,6 @@
 
     # https://notashelf.github.io/nvf/options.html
     settings = {
-      vim.lsp = {
-        enable = true;
-        formatOnSave = true;
-      };
-
-      vim.treesitter = {
-        enable = true;
-      };
-
-      vim.autocomplete.blink-cmp = {
-        enable = true;
-        setupOpts.sources.per_filetype.markdown = [
-          "path"
-        ];
-      };
-
-      vim.formatter.conform-nvim = {
-        enable = true;
-        setupOpts.formatters_by_ft = {
-          markdown = [ "prettierd" ];
-          nix = [ "nixfmt" ];
-        };
-      };
-
-      vim.languages = {
-        python.enable = true;
-        nix.enable = true;
-        clang.enable = true;
-      };
 
       vim.binds.whichKey.enable = true;
 
@@ -82,28 +53,7 @@
           action = "<cmd>TmuxNavigateLeft<cr>";
           silent = true;
         }
-        # snacks.nvim picker
-        {
-          key = "<M-g>";
-          mode = [ "n" ];
-          action = "<cmd>lua require('snacks.picker').grep({cwd = '/home/meowster', hidden = true, exclude= { '.bash_history' }})<cr>";
-          silent = true;
-          desc = "Live Grep";
-        }
-        {
-          key = "<M-f>";
-          mode = [ "n" ];
-          action = "<cmd>lua require('snacks.picker').smart({cwd = '/home/meowster', hidden = true, exclude= { '.bash_history' } })<cr>";
-          silent = true;
-          desc = "Smart Find";
-        }
-        {
-          key = "<M-b>";
-          mode = [ "n" ];
-          action = "<cmd>lua require('snacks.picker').buffers()<cr>";
-          silent = true;
-          desc = "Smart Find";
-        }
+
       ];
 
       vim.utility = {
@@ -112,19 +62,6 @@
 
           setupOpts = {
             view_options.show_hidden = true;
-          };
-        };
-
-        snacks-nvim = {
-          enable = true;
-
-          setupOpts = {
-            picker = {
-              enabled = true;
-            };
-            image = {
-              enabled = true;
-            };
           };
         };
 

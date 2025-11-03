@@ -3,6 +3,8 @@
   ...
 }:
 {
+  programs.zellij.enable = true;
+
   home.packages = with pkgs; [
     fuzzel # application picker
     pavucontrol # volume control

@@ -10,6 +10,7 @@
 
   programs.niri = {
 
+    enable = true;
     settings = {
 
       input.touchpad = {
