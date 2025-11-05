@@ -32,6 +32,9 @@
     prettierd
     nixfmt-rfc-style
 
+    # linters
+    cpplint
+
     # android utilities
     android-tools
     jmtpfs

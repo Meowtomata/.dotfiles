@@ -18,6 +18,25 @@
       formatOnSave = true;
     };
 
+    diagnostics = {
+      enable = true;
+
+      config = {
+        # virtual_text = true;
+        virtual_lines = true;
+      };
+
+      nvim-lint = {
+        enable = true;
+
+        # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file
+        linters_by_ft = {
+          # cpp = [ "cpplint" ];
+
+        };
+      };
+    };
+
     languages = {
       python.enable = true;
 
