@@ -14,6 +14,7 @@
     ./modules/qutebrowser
     ./modules/bash
     ./modules/zellij
+    ./modules/tmux
     # ./modules/test-logger.nix
     # ./modules/hyprland-logger.nix
   ];
@@ -31,8 +32,17 @@
   #   '';
   # };
 
+  # nixCats = {
+  #   enable = true;
+  #   packageNames = [ "nixCats" "regularCats" ];
+  # };
+
   programs.kitty = {
     enable = true;
+
+    keybindings = {
+      "alt+shift+o" = ''launch tmux split-window "nvim -c 'ObsidianSearch'"'';
+    };
   };
 
   programs.git = {
