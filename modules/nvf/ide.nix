@@ -50,7 +50,7 @@
 
       # enable markdown language features
       markdown.enable = true;
-      markdown.lsp.enable = true;
+      # markdown.lsp.enable = true;
       markdown.treesitter.enable = true;
       markdown.format.enable = true;
       # change formatter from atorcious default deno formatter

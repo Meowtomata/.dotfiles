@@ -17,7 +17,7 @@
       ];
 
       vim.notes.obsidian = {
-        enable = false;
+        enable = true;
 
         setupOpts = {
           workspaces = [
@@ -26,6 +26,23 @@
               path = "${config.home.homeDirectory}/Obsidian/";
             }
           ];
+
+          # Adapted from https://github.com/obsidian-nvim/obsidian.nvim/blob/1db1841f99f496a7a453a31a156552686e4cfd8a/tests/test_note.lua#L13
+          note_id_func =
+            lib.generators.mkLuaInline # lua
+              ''
+                function(title)
+                    local id = ""
+                    if title ~= nil then
+                      id = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+                    else
+                      for _ = 1, 4 do
+                        id = id .. string.char(math.random(65, 90))
+                      end
+                    end
+                    return tostring(os.time()) .. "-" .. id
+                  end
+              '';
 
           follow_url_func =
             lib.generators.mkLuaInline # lua
