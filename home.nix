@@ -1,11 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  lib,
-  # leetcode-tui,
-  ...
-}:
+{ ... }:
 
 # https://nix-community.github.io/home-manager/options.xhtml
 {
@@ -30,13 +23,13 @@
     NIXPKGS_ALLOW_UNFREE = 1;
   };
 
-  home.file.".ignore" = {
-    text = ''
-      .BitwigStudio
-      .cache
-      .local
-    '';
-  };
+  # home.file.".ignore" = {
+  #   text = ''
+  #     .BitwigStudio
+  #     .cache
+  #     .local
+  #   '';
+  # };
 
   programs.kitty = {
     enable = true;

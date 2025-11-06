@@ -95,20 +95,29 @@
           vim.keymap.set(mode, lhs, rhs, opts)
         end
 
+        local excluded_results = {
+            '.bash_history',
+            '.local',
+            '.cache',
+        }
+
         -- Top Pickers & Explorer
         set_keymap('n', '<M-f>', { desc = 'Smart Find Files' },
-            function() Snacks.picker.grep({
+            function() Snacks.picker.smart({
                 cwd = '/home/meowster', 
                 hidden = true, 
-                exclude= { '.bash_history' }
+                exclude= excluded_results
             }) end)
 
         set_keymap('n', '<M-g>', { desc = 'Grep' },
             function() Snacks.picker.grep({
                 cwd = '/home/meowster', 
                 hidden = true, 
-                exclude= { '.bash_history' }
+                exclude= excluded_results
             }) end)
+
+        set_keymap('n', '<leader>sk', { desc = 'Keymaps' },
+            function() Snacks.picker.keymaps() end) 
       '';
 
     utility.snacks-nvim = {
