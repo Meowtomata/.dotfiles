@@ -3,7 +3,6 @@
   ...
 }:
 {
-
   home.packages = with pkgs; [
     fuzzel # application picker
     pavucontrol # volume control
@@ -14,15 +13,17 @@
     neovim # text editor
     kitty # terminal
     qutebrowser # browser
+    obsidian
     sweethome3d.application # interior design app
 
     # Terminal Apps
     bitwarden-cli
     lazygit
+    yazi
     tmux
 
     # utilities
-    xwayland-satellite # needed for apps like sweethome3d
+    xwayland-satellite # needed for sweethome3d and qutebrowser
     wl-clipboard
     fzf # fuzzy search
     ripgrep # grep
@@ -34,7 +35,7 @@
     nixfmt-rfc-style
 
     # linters
-    cpplint
+    # cpplint
 
     # android utilities
     android-tools
