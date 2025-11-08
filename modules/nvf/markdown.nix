@@ -1,11 +1,34 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   programs.nvf = {
-    settings = {
 
-      vim.languages = {
-        markdown.enable = true;
+    settings = {
+      # Override epwalsh/obsidian.nvim with obsidian-nvim/obsidian.nvim
+      vim.pluginOverrides = {
+        obsidian-nvim = pkgs.fetchFromGitHub {
+          owner = "obsidian-nvim";
+          repo = "obsidian.nvim";
+          rev = "refs/tags/v3.14.4";
+          hash = "sha256-1dZpxRZH56O8SefPEyc2CgWZDpIrqc78S5kxbt/WeRE=";
+        };
+        # obsidian-nvim = pkgs.vimUtils.buildVimPlugin {
+        #   name = "obsidian-nvim-local";
+        #   src = ../../obsidian.nvim;
+        #   # Add this attribute to skip the failing modules
+        #   nvimSkipModule = [
+        #     "minimal"
+        #     "obsidian.picker._mini"
+        #     "obsidian.picker._fzf"
+        #     "obsidian.picker._telescope"
+        #     "obsidian.picker._snacks"
+        #   ];
+        # };
       };
 
       vim.autocmds = [
@@ -27,6 +50,12 @@
             }
           ];
 
+          # Specify where new obsidian images will be stored
+          attachments.attachments.img_folder = "./assets/imgs";
+
+          # Remove access to legacy commands (and warning)
+          legacy_commands = false;
+
           # Adapted from https://github.com/obsidian-nvim/obsidian.nvim/blob/1db1841f99f496a7a453a31a156552686e4cfd8a/tests/test_note.lua#L13
           note_id_func =
             lib.generators.mkLuaInline # lua
@@ -43,46 +72,7 @@
                     return tostring(os.time()) .. "-" .. id
                   end
               '';
-
-          follow_url_func =
-            lib.generators.mkLuaInline # lua
-              ''
-                function(url)
-                  if string.match(url, "^file:///") then
-                    local path = string.gsub(url, "^file://", "")
-                    vim.cmd("edit " .. vim.fn.fnameescape(path))
-                    return
-                  end
-
-                  local fallback_command = { "qutebrowser", url }
-
-                  local ok, workspace_id = pcall(function()
-                    local json_output = vim.fn.system("hyprctl activeworkspace -j")
-                    if vim.v.shell_error ~= 0 then return nil end
-                    return vim.fn.json_decode(json_output).id
-                  end)
-
-                  if not (ok and workspace_id) then
-                    vim.fn.jobstart(fallback_command)
-                    vim.notify("Opening " .. url .. " in qutebrowser (fallback)", "info")
-                    return
-                  end
-
-                  local rule = "workspace " .. workspace_id .. " silent, class:(?i)qutebrowser, once"
-                  local rule_command = { "hyprctl", "keyword", "windowrulev2", rule }
-
-                  local launch_command = { "qutebrowser", "--target", "window", url }
-
-                  vim.fn.jobstart(rule_command, {
-                    on_exit = function()
-                      vim.fn.jobstart(launch_command)
-                      vim.notify("Opening " .. url .. " in qutebrowser on workspace " .. workspace_id, "info")
-                    end,
-                  })
-                end
-              '';
         };
-
       };
     };
   };

@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 {
   programs.nvf.settings.vim = {
     # Treesitter
@@ -9,6 +9,16 @@
     # Autocompletion
     autocomplete.blink-cmp = {
       enable = true;
+
+      setupOpts = {
+        # Disables autocomplete when writing in markdown buffer
+        # (by not including it below)
+        sources.per_filetype.markdown = [
+          "lsp"
+          "path"
+          "snippets"
+        ];
+      };
     };
 
     # LSPs
@@ -127,9 +137,20 @@
         picker = {
           enabled = true;
         };
-
         image = {
           enabled = true;
+
+          # Needed for snacks to understand where images are located for loading
+          # https://github.com/obsidian-nvim/obsidian.nvim/wiki/Images#viewing
+          resolve =
+            lib.generators.mkLuaInline # lua
+              ''
+                  function(path, src)
+                   if require("obsidian.api").path_is_note(path) then
+                      return require("obsidian.api").resolve_image_path(src)
+                   end
+                end,
+              '';
         };
       };
     };

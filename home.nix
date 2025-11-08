@@ -32,16 +32,11 @@
   #   '';
   # };
 
-  # nixCats = {
-  #   enable = true;
-  #   packageNames = [ "nixCats" "regularCats" ];
-  # };
-
   programs.kitty = {
     enable = true;
 
     keybindings = {
-      "alt+shift+o" = ''launch tmux split-window "nvim -c 'ObsidianSearch'"'';
+      "alt+shift+o" = ''launch tmux split-window "nvim -c 'Obsidian search'"'';
     };
   };
 

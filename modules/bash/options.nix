@@ -23,9 +23,9 @@
         bind -r "\eg"
         bind -x '"\eg": nvim-grep-picker'
         bind -r "\ed"
-        bind -x '"\ed": nvim -c ObsidianDailies'
-        bind -x '"\eo": nvim -c ObsidianSearch'
-        bind -x '"\en": nvim -c ObsidianNew'
+        bind -x '"\ed": nvim -c Obsidian\ dailies'
+        bind -x '"\eo": nvim -c Obsidian\ search'
+        bind -x '"\en": nvim -c Obsidian\ new'
       '';
   };
 }
