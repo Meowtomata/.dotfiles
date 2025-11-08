@@ -2,12 +2,12 @@
 
 {
   imports = [
-    ./markdown.nix
     ./options.nix
-    ./markdown-binds.nix
     ./additional.nix
+    ./mappings.nix
+    ./obsidian.nix
     ./ide.nix
-    ./snacks.nix
-    ./markdown-binds.nix
   ];
+
+  programs.nvf.enable = true;
 }
