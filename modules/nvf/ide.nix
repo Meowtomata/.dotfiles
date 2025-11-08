@@ -67,16 +67,6 @@
       markdown.format.type = "prettierd";
     };
 
-    # Snacks Stuff
-    keymaps = [
-      {
-        key = "<M-b>";
-        mode = [ "n" ];
-        action = "<cmd>lua require('snacks.picker').buffers()<cr>";
-        silent = true;
-        desc = "Buffers Find";
-      }
-    ];
     # Allows me to import lua code in files under the ./nvim/lua directory
     additionalRuntimePaths = [ ./nvim ];
 
@@ -128,6 +118,10 @@
         end
       '';
 
+    /*
+      I find it more readable (and potentially concise) to set my keymaps in lua
+      So I will set them in native lua here
+    */
     luaConfigRC.mappings = # lua
       ''
         -- function to swap opts and rhs for improved readability
@@ -139,27 +133,39 @@
           vim.keymap.set(mode, lhs, rhs, opts)
         end
 
+        -- Create user commands to more easily run as a bash option 
         local excluded_results = {
             '.bash_history',
             '.local',
             '.cache',
         }
 
-        -- Top Pickers & Explorer
-        set_keymap('n', '<M-f>', { desc = 'Smart Find Files' },
-            function() Snacks.picker.smart({
-                cwd = '/home/meowster', 
-                hidden = true, 
-                exclude= excluded_results
-            }) end)
+        vim.api.nvim_create_user_command('SmartFind', function()
+            require('snacks').picker.smart({
+                cwd = '/home/meowster',
+                hidden = true,
+                exclude = excluded_results
+            })
+        end, {
+            desc = 'Smart Find Files in /home/meowster'
+        })
 
-        set_keymap('n', '<M-g>', { desc = 'Grep' },
-            function() Snacks.picker.grep({
-                cwd = '/home/meowster', 
-                hidden = true, 
-                exclude= excluded_results
-            }) end)
+        vim.api.nvim_create_user_command('GrepFind', function()
+            require('snacks').picker.grep({
+                cwd = '/home/meowster',
+                hidden = true,
+                exclude = excluded_results
+            })
+        end, {
+            desc = 'Grep Find Files in /home/meowster'
+        })
 
+        set_keymap('n', '<M-f>', { desc = 'Smart Find Files' }, '<cmd>SmartFind<CR>')
+        set_keymap('n', '<M-g>', { desc = 'Grep' }, '<cmd>GrepFind<CR>')
+
+
+        set_keymap('n', '<M-b>', { desc = 'Buffers Find' },
+            function() Snacks.picker.buffers() end) 
         set_keymap('n', '<leader>sk', { desc = 'Keymaps' },
             function() Snacks.picker.keymaps() end) 
       '';
