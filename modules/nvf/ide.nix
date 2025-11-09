@@ -50,6 +50,8 @@
 
     languages = {
       python.enable = true;
+      python.lsp.enable = true;
+      python.treesitter.enable = true;
 
       nix.enable = true;
       nix.lsp.enable = true;

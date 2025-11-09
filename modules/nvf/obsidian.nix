@@ -51,6 +51,11 @@
           }
         ];
 
+        # I SPENT LIKE 3 HOURS TROUBLESHOOTING THIS
+        # WHY TF IS IT 'snacks.pick' NOT 'snacks.picker'
+        # AND WHY ISN'T THIS MENTIONED ANYWHERE IN THE README
+        picker.name = "snacks.pick";
+
         # Specify where new obsidian images will be stored
         attachments.attachments.img_folder = "./assets/imgs";
 

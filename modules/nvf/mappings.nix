@@ -95,6 +95,20 @@
         -- Better Markdown Navigation
         vim.keymap.set("n", "j", "gj", { silent = true })
         vim.keymap.set("n", "k", "gk", { silent = true })
+
+        -- Resize Splits Inside Neovim
+        vim.keymap.set('n', '<M-S-l>', ':vertical resize +20<cr>')
+        vim.keymap.set('n', '<M-S-h>', ':vertical resize -20<cr>')
+        vim.keymap.set('n', '<M-S-k>', ':resize +20<cr>') 
+        vim.keymap.set('n', '<M-S-j>', ':resize -20<cr>')
+
+        -- Leetcode.nvim (maybe I can later associate it with the buffer)
+        vim.keymap.set('n', '<M-c>', ':Leet console<cr>')
+        vim.keymap.set('n', '<M-t>', ':Leet test<cr>')
+        vim.keymap.set('n', '<M-r>', ':Leet run<cr>')
+        vim.keymap.set('n', '<M-i>', ':Leet info<cr>')
+
+
       '';
 
   };
