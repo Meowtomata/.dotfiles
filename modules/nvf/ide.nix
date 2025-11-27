@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.nvf.settings.vim = {
     # Treesitter
@@ -97,6 +97,51 @@
       # change formatter from atorcious default deno formatter
       markdown.format.type = "prettierd";
     };
+
+    extraPlugins = {
+      molten = {
+        package = pkgs.vimPlugins.molten-nvim.overrideAttrs (old: {
+          src = pkgs.fetchFromGitHub {
+            owner = "benlubas";
+            repo = "molten-nvim";
+            rev = "4fd7be6a12b5efda5179db642f13bad60893acca";
+            sha256 = "sha256-7+OXmwYue7nfE50836jkuxkviT761aHvH+Ca+zyMFPQ=";
+          };
+
+          nvimSkipModule = [
+            "load_snacks_nvim"
+            "load_wezterm_nvim"
+            "load_image_nvim"
+          ];
+        });
+
+        setup = # lua
+          ''
+            vim.g.molten_image_provider = "snacks.nvim"
+            vim.g.molten_auto_image_popup = true
+            vim.g.molten_wrap_output = true
+            vim.g.molten_virt_text_output = true
+            vim.g.molten_virt_lines_off_by_1 = true
+          '';
+      };
+
+    };
+
+    withPython3 = true;
+
+    luaPackages = [
+      "magick"
+    ];
+
+    python3Packages = [
+      "pynvim"
+      "jupyter-client"
+      "cairosvg"
+      "pnglatex"
+      "plotly"
+      "pyperclip"
+      "nbformat"
+    ];
 
   };
 }
