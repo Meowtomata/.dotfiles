@@ -102,13 +102,42 @@
         vim.keymap.set('n', '<M-S-k>', ':resize +20<cr>') 
         vim.keymap.set('n', '<M-S-j>', ':resize -20<cr>')
 
-        -- Leetcode.nvim (maybe I can later associate it with the buffer)
-        vim.keymap.set('n', '<M-c>', ':Leet console<cr>')
-        vim.keymap.set('n', '<M-t>', ':Leet test<cr>')
-        vim.keymap.set('n', '<M-r>', ':Leet run<cr>')
-        vim.keymap.set('n', '<M-i>', ':Leet info<cr>')
+        -- Leetcode.nvim mappings
+        local leetcode_maps = function()
+          vim.keymap.set("n", "<M-r>", ":Leet run<cr>", { desc = "LeetCode: Run" })
+          vim.keymap.set("n", "<M-s>", ":Leet submit<cr>", { desc = "LeetCode: Submit" })
+          vim.keymap.set("n", "<M-i>", ":Leet info<cr>", { desc = "LeetCode: Info" })
+        end
 
+        -- LeetCode binds are automatically loaded when entering this directory
+        vim.api.nvim_create_autocmd("BufEnter", {
+          pattern = vim.fn.expand("~/.local/share/nvf/leetcode/*"),
+          callback = function()
+            print("LeetCode Environment Detected")
+            leetcode_maps()
+          end,
+        })
 
+        -- Molten.nvim mappings
+        local molten_maps = function()
+          vim.keymap.set("n", "<M-e>", ":MoltenEvaluateOperator<CR>",
+              { silent = true, desc = "run operator selection" })
+          vim.keymap.set("n", "<M-r>l", ":MoltenEvaluateLine<CR>",
+              { silent = true, desc = "evaluate line" })
+          vim.keymap.set("n", "<M-r>r", ":MoltenReevaluateCell<CR>",
+              { silent = true, desc = "re-evaluate cell" })
+          vim.keymap.set("v", "<M-r>", ":<C-u>MoltenEvaluateVisual<CR>gv",
+              { silent = true, desc = "evaluate visual selection" })
+        end
+
+        -- Create :MagmaStart command to initialize Magma and its binds
+        vim.api.nvim_create_user_command("MoltenStart", function()
+          vim.cmd("MoltenInit") 
+          molten_maps()
+          print("Molten Initialized & Keymaps Set")
+        end, {})
+
+        vim.keymap.set("n", "<M-m>", ":MoltenStart<cr>", { desc = "Initialize Molten + Keys" })
       '';
 
   };
