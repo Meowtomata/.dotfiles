@@ -62,13 +62,13 @@
       css.lsp.enable = true;
       css.treesitter.enable = true;
       css.format.enable = true;
-      css.format.type = "prettierd";
+      css.format.type = [ "prettierd" ];
 
       ts.enable = true;
       ts.lsp.enable = true;
       ts.treesitter.enable = true;
       ts.format.enable = true;
-      ts.format.type = "prettierd";
+      ts.format.type = [ "prettierd" ];
       ts.extraDiagnostics.enable = true;
       ts.extensions.ts-error-translator.enable = true;
 
@@ -76,7 +76,7 @@
       nix.lsp.enable = true;
       nix.treesitter.enable = true;
       nix.format.enable = true;
-      nix.format.type = "nixfmt";
+      nix.format.type = [ "nixfmt" ];
       nix.extraDiagnostics.enable = true;
 
       lua.enable = true;
@@ -95,7 +95,7 @@
       markdown.treesitter.enable = true;
       markdown.format.enable = true;
       # change formatter from atorcious default deno formatter
-      markdown.format.type = "prettierd";
+      markdown.format.type = [ "prettierd" ];
     };
 
     extraPlugins = {

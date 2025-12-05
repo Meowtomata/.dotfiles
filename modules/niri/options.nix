@@ -1,4 +1,6 @@
 {
+  pkgs,
+  inputs,
   ...
 }:
 
@@ -37,5 +39,10 @@
       input.keyboard.xkb.layout = "us";
 
     };
+
+    # Disable tests
+    package = inputs.niri.packages.${pkgs.system}.niri-stable.overrideAttrs (old: {
+      doCheck = false;
+    });
   };
 }

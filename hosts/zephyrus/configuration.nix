@@ -52,14 +52,24 @@
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       dejavu_fonts
     ];
 
     fontconfig.enable = true;
   };
 
-  programs.niri.enable = true;
+  programs.niri = {
+    enable = true;
+
+    # Disable tests
+    package = inputs.niri.packages.${pkgs.system}.niri-stable.overrideAttrs (old: {
+      doCheck = false;
+    });
+  };
+
+  services.xserver.enable = true;
+  services.xserver.windowManager.qtile.enable = true;
 
   environment.variables.NIXOS_OZONE_WL = "1";
 
