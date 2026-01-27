@@ -12,12 +12,15 @@
 
     initExtra = # bash
       ''
+        # Defined in ~/.dotfiles/modules/nvf/mappings.nix with luaConfigRC 
+        bind -x '"\eo": nvim -c SmartObsidianSearch'
         bind -x '"\ef": nvim -c SmartFind'
         bind -r "\eg"
         bind -x '"\eg": nvim -c GrepFind'
+
+        bind -x '"\ea": nvim -c lua\ Snacks.picker.projects\(\)'
         bind -r "\ed"
         bind -x '"\ed": nvim -c Obsidian\ dailies'
-        bind -x '"\eo": nvim -c Obsidian\ search'
         bind -x '"\en": nvim -c Obsidian\ new'
       '';
   };

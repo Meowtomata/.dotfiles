@@ -8,8 +8,22 @@
         enable = true;
 
         setupOpts = {
-          view_options.show_hidden = true;
+          view_options = {
+            sort = [
+              [
+                "type"
+                "desc"
+              ]
+              [
+                "name"
+                "asc"
+              ]
+            ];
+            show_hidden = true;
+          };
+
         };
+
       };
 
       leetcode-nvim = {
@@ -25,6 +39,12 @@
       vim-tmux-navigator = {
         package = pkgs.vimPlugins.vim-tmux-navigator;
       };
+
+      vimtex = {
+        package = pkgs.vimPlugins.vimtex;
+        setup = # lua
+          "vim.g.vimtex_view_method = 'zathura'";
+      };
     };
   };
 
@@ -35,6 +55,10 @@
     text = ''
       [tool.basedpyright]
       reportDeprecated = "none"
+      reportUnknownMemberType = "none"
+      reportUndefinedVariable = "none"
+      reportUnknownVariableType = "none"
+      reportUnknownParameterType = "none"
     '';
   };
 }

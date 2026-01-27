@@ -6,6 +6,11 @@
       enable = true;
     };
 
+    theme.enable = true;
+    theme.name = "everforest";
+    theme.style = "hard";
+
+    terminal.toggleterm.enable = true;
     mini.test.enable = true;
 
     # Autocompletion
@@ -21,6 +26,8 @@
           "snippets"
         ];
       };
+
+      sourcePlugins.ripgrep.enable = true;
     };
 
     # LSPs
@@ -28,6 +35,11 @@
       # enable global lsp functionality
       enable = true;
       formatOnSave = true;
+      inlayHints.enable = true;
+      lspsaga.enable = true;
+
+      # enables lsp & code completion for code blocks
+      otter-nvim.enable = true;
     };
 
     # Display error messages while coding and lint
@@ -35,67 +47,93 @@
       enable = true;
 
       config = {
-        # virtual_text = true;
-        virtual_lines = true;
+        virtual_text = true;
       };
 
       nvim-lint = {
         enable = true;
 
         # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file
-        linters_by_ft = {
-          cpp = [ "cpplint" ];
-
-        };
+        # linters_by_ft = {
+        #   cpp = [ "cpplint" ];
+        #
+        # };
       };
     };
 
+    # https://notashelf.github.io/nvf/options.html
     languages = {
-      python.enable = true;
-      python.lsp.enable = true;
-      python.treesitter.enable = true;
+
+      python = {
+        enable = true;
+        lsp.enable = true;
+        treesitter.enable = true;
+      };
 
       html.enable = true;
       html.treesitter.enable = true;
 
-      css.enable = true;
-      css.lsp.enable = true;
-      css.treesitter.enable = true;
-      css.format.enable = true;
-      css.format.type = [ "prettierd" ];
+      css = {
+        enable = true;
+        lsp.enable = true;
+        treesitter.enable = true;
+        format.enable = true;
+        format.type = [ "prettierd" ];
+      };
 
-      ts.enable = true;
-      ts.lsp.enable = true;
-      ts.treesitter.enable = true;
-      ts.format.enable = true;
-      ts.format.type = [ "prettierd" ];
-      ts.extraDiagnostics.enable = true;
-      ts.extensions.ts-error-translator.enable = true;
+      ts = {
+        enable = true;
+        lsp.enable = true;
+        treesitter.enable = true;
+        format.enable = true;
+        format.type = [ "prettierd" ];
+        extraDiagnostics.enable = true;
+        extensions.ts-error-translator.enable = true;
+      };
 
-      nix.enable = true;
-      nix.lsp.enable = true;
-      nix.treesitter.enable = true;
-      nix.format.enable = true;
-      nix.format.type = [ "nixfmt" ];
-      nix.extraDiagnostics.enable = true;
+      nix = {
+        enable = true;
+        lsp.enable = true;
+        treesitter.enable = true;
+        format.enable = true;
+        format.type = [ "nixfmt" ];
+        extraDiagnostics.enable = true;
+      };
 
-      lua.enable = true;
-      lua.lsp.enable = true;
-      lua.treesitter.enable = true;
-      lua.format.enable = true;
-      lua.extraDiagnostics.enable = true;
+      lua = {
+        enable = true;
+        lsp.enable = true;
+        treesitter.enable = true;
+        format.enable = true;
+        extraDiagnostics.enable = true;
+      };
 
-      clang.enable = true;
-      clang.lsp.enable = true;
-      clang.treesitter.enable = true;
+      bash = {
+        enable = true;
+        lsp.enable = true;
+        treesitter.enable = true;
+        format.enable = true;
+        extraDiagnostics.enable = true;
+      };
 
-      # enable markdown language features
-      markdown.enable = true;
-      # markdown.lsp.enable = true;
-      markdown.treesitter.enable = true;
-      markdown.format.enable = true;
-      # change formatter from atorcious default deno formatter
-      markdown.format.type = [ "prettierd" ];
+      clang = {
+        enable = true;
+        lsp.enable = true;
+        treesitter.enable = true;
+      };
+
+      markdown = {
+        # enable markdown language features
+        enable = true;
+        # make sure marksman.toml or .git exists in proj dir
+        lsp.enable = true;
+        # lsp.servers = "markdown-oxide";
+        treesitter.enable = true;
+        format.enable = true;
+        extensions.render-markdown-nvim.enable = false;
+        # change formatter from atorcious default deno formatter
+        format.type = [ "prettierd" ];
+      };
     };
 
     extraPlugins = {
@@ -123,6 +161,42 @@
             vim.g.molten_virt_text_output = true
             vim.g.molten_virt_lines_off_by_1 = true
           '';
+      };
+
+      quarto-nvim = {
+        package = pkgs.vimPlugins.quarto-nvim;
+
+        setup = # lua
+          ''
+            require('quarto').setup {
+              debug = false,
+              closePreviewOnExit = true,
+              lspFeatures = {
+                enabled = true,
+                chunks = "curly",
+                languages = { "r", "python", "julia", "bash", "html" },
+                diagnostics = {
+                  enabled = true,
+                  triggers = { "BufWritePost" },
+                },
+                completion = {
+                  enabled = true,
+                },
+              },
+              codeRunner = {
+                enabled = true,
+                default_method = "molten",
+                ft_runners = {},
+                never_run = { 'yaml' },
+              },
+            }
+
+          '';
+
+        after = [
+          "otter-nvim"
+          "nvim-treesitter"
+        ];
       };
 
     };

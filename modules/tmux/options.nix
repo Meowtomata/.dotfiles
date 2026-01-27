@@ -3,7 +3,7 @@
   programs.tmux = {
     enable = true;
     keyMode = "vi";
-    prefix = "M-a";
+    prefix = "M-`";
 
     baseIndex = 1;
 

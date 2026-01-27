@@ -40,9 +40,11 @@
     };
   };
 
-  programs.git = {
-    userName = "Meowtomata";
-    userEmail = "its.anatoliy@gmail.com";
+  programs.git.settings = {
+    user = {
+      name = "Meowtomata";
+      email = "its.anatoliy@gmail.com";
+    };
   };
 
   programs.ssh = {

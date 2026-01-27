@@ -99,11 +99,34 @@
     ];
   };
 
+  services.syncthing = {
+    enable = false;
+    openDefaultPorts = true;
+    user = "meowster";
+    group = "users";
+  };
+
+  services.actual = {
+    enable = true;
+    settings = {
+      port = 5006;
+    };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+  };
+
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
     vim
     wget
     git
+
+    # For PDFs in snacks
+    (imagemagick.override {
+      ghostscriptSupport = true;
+    })
 
     # probably needed for zephyrus
     asusctl
@@ -116,6 +139,9 @@
   services.supergfxd.enable = true;
   hardware.graphics.enable = true;
   hardware.nvidia.powerManagement.enable = true;
+  # for wacom tablet
+  hardware.opentabletdriver.enable = true;
+  services.input-remapper.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 

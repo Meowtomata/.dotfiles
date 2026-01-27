@@ -3,6 +3,22 @@
   programs.niri = {
     settings = {
 
+      # make sure laptop monitor is enabled
+      outputs."eDP-1".enable = true;
+
+      # config for external 240hz GSYNC 1080p monitor
+      # but uhh I don't have a usb c to display port cable
+      # so we're stuck with 60 hz and no gsync in the mean time
+      outputs."HDMI-A-1" = {
+        enable = true;
+        # mode = {
+        #   refresh = 240.0;
+        #   height = 1920;
+        #   width = 1080;
+        # };
+        # variable-refresh-rate = true;
+      };
+
       binds = with config.lib.niri.actions; {
 
         "Mod+T" = {
@@ -97,6 +113,10 @@
 
         "Mod+N" = {
           action = spawn "sh" "-c" "echo \"lid open\" >> $HOME/bin/lid-open";
+        };
+
+        "Mod+s" = {
+          action = spawn "sh" "-c" "grim -g \"$(slurp)\" - | wl-copy";
         };
 
         "XF86MonBrightnessUp" = {

@@ -20,8 +20,11 @@
 
     settings = {
       colors.webpage.darkmode.enabled = true;
+      colors.webpage.darkmode.policy.images = "never";
       content.blocking.enabled = true;
       content.pdfjs = true;
+      downloads.location.directory = "~/Downloads";
+      downloads.location.prompt = false;
     };
 
     greasemonkey = [
